@@ -141,6 +141,16 @@ namespace Giselle.Commons
             return sbyte.TryParse(str, out var value) ? value : new sbyte?();
         }
 
+        public static bool ToBool(string str, bool fallback = false)
+        {
+            return bool.TryParse(str, out var value) ? value : fallback;
+        }
+
+        public static bool? ToBoolNullable(string str)
+        {
+            return bool.TryParse(str, out var value) ? value : new bool?();
+        }
+
     }
 
 }
