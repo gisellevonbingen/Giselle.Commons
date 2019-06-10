@@ -62,7 +62,7 @@ namespace Giselle.Commons
             return int.TryParse(str, out var value) ? value : fallback;
         }
 
-        public static ushort ToUShort(string str, ushort fallback)
+        public static ushort ToUShort(string str, ushort fallback = 0)
         {
             return ushort.TryParse(str, out var value) ? value : fallback;
         }
@@ -77,10 +77,6 @@ namespace Giselle.Commons
             return char.TryParse(str, out var value) ? value : fallback; 
         }
 
-        public static byte ToByte(string str)
-        {
-            return ToByte(str, 0);
-        }
         public static byte ToByte(string str, byte fallback = 0)
         {
             return byte.TryParse(str, out var value) ? value : fallback;
