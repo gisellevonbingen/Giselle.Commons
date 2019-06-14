@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Giselle.Commons.Test.Properties {
+namespace Giselle.Commons.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

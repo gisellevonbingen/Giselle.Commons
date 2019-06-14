@@ -7,8 +7,8 @@
     <ProjectGuid>{8739E65C-A8F4-4896-BF48-82D52264183B}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Commons.Test</RootNamespace>
-    <AssemblyName>Commons.Test</AssemblyName>
+    <RootNamespace>Giselle.Commons.Test</RootNamespace>
+    <AssemblyName>Giselle.Commons.Test</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
