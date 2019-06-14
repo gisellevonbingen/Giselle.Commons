@@ -10,25 +10,25 @@ using System.Threading.Tasks;
 namespace Giselle.Commons.Web
 {
     [Serializable]
-    public class NetworkException : Exception
+    public class WebNetworkException : Exception
     {
-        public NetworkException() : base()
+        public WebNetworkException() : base()
         {
 
         }
 
-        public NetworkException(string message) : base(message)
+        public WebNetworkException(string message) : base(message)
         {
 
         }
 
-        public NetworkException(string message, Exception innerException) : base(message, innerException)
+        public WebNetworkException(string message, Exception innerException) : base(message, innerException)
         {
 
         }
 
         [SecuritySafeCritical]
-        protected NetworkException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected WebNetworkException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
 
         }

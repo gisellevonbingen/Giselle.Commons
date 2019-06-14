@@ -26,16 +26,29 @@ namespace Giselle.Commons.Web
             return true;
         }
 
-        public delegate void RequestWriteEventHandler(object sender, RequestWriteEventArgs e);
+        public delegate void WebRequestWriteEventHandler(object sender, WebRequestWriteEventArgs e);
 
         public CookieContainer Cookies { get; }
+
+        public event EventHandler<WebRequestEventArgs> Requesting;
+        public event EventHandler<WebResponseEventArgs> Responsed;
 
         public WebExplorer()
         {
             this.Cookies = new CookieContainer();
         }
 
-        public HttpWebRequest CreateRequest(RequestParameter parameter)
+        protected virtual void OnRequesting(WebRequestEventArgs e)
+        {
+            this.Requesting?.Invoke(this, e);
+        }
+
+        protected virtual void OnResponsed(WebResponseEventArgs e)
+        {
+            this.Responsed?.Invoke(this, e);
+        }
+
+        public virtual HttpWebRequest CreateRequest(WebRequestParameter parameter)
         {
             string url = parameter.URL;
             var uri = new Uri(url);
@@ -96,7 +109,7 @@ namespace Giselle.Commons.Web
             return request;
         }
 
-        private void WriteReuqestParameter(HttpWebRequest request, object writeParameter)
+        protected virtual void WriteReuqestParameter(HttpWebRequest request, object writeParameter)
         {
             if (writeParameter == null)
             {
@@ -105,9 +118,9 @@ namespace Giselle.Commons.Web
 
             using (var requestStream = request.GetRequestStream())
             {
-                if (writeParameter is RequestWriteEventHandler handler)
+                if (writeParameter is WebRequestWriteEventHandler handler)
                 {
-                    var e = new RequestWriteEventArgs(requestStream);
+                    var e = new WebRequestWriteEventArgs(requestStream);
                     handler(this, e);
                 }
                 else if (writeParameter is byte[] bytes)
@@ -124,7 +137,7 @@ namespace Giselle.Commons.Web
 
         }
 
-        public SessionResponse Request(RequestParameter parameter)
+        public virtual WebResponse Request(WebRequestParameter parameter)
         {
             Exception lastException = null;
 
@@ -132,7 +145,7 @@ namespace Giselle.Commons.Web
             {
                 try
                 {
-                    return this.Request0(parameter);
+                    return this.RequestInTry(parameter, i);
                 }
                 catch (Exception e)
                 {
@@ -141,12 +154,11 @@ namespace Giselle.Commons.Web
 
             }
 
-            throw new NetworkException("", lastException);
+            throw new WebNetworkException("", lastException);
         }
 
-        private SessionResponse Request0(RequestParameter parameter)
+        protected virtual WebResponse RequestInTry(WebRequestParameter parameter, int tryIndex)
         {
-            HttpWebResponse response = null;
             Exception innerException = null;
 
             try
@@ -154,20 +166,37 @@ namespace Giselle.Commons.Web
                 var request = this.CreateRequest(parameter);
                 this.WriteReuqestParameter(request, parameter.WriteParameter);
 
+                this.OnRequesting(new WebRequestEventArgs(request, parameter, tryIndex));
+
+                HttpWebResponse responseImpl = null;
+
                 try
                 {
-                    response = (HttpWebResponse)request.GetResponse();
+                    responseImpl = (HttpWebResponse)request.GetResponse();
                 }
                 catch (WebException e)
                 {
                     innerException = e;
-                    response = (HttpWebResponse)e.Response;
+                    responseImpl = (HttpWebResponse)e.Response;
                 }
 
-                if (response != null)
+                if (responseImpl != null)
                 {
-                    this.Cookies.Add(response.Cookies);
-                    return new SessionResponse(response);
+                    this.Cookies.Add(responseImpl.Cookies);
+                    var response = new WebResponse(responseImpl);
+
+                    try
+                    {
+                        this.OnResponsed(new WebResponseEventArgs(request, parameter, tryIndex, response));
+
+                        return response;
+                    }
+                    catch (Exception e)
+                    {
+                        innerException = e;
+                        ObjectUtils.DisposeQuietly(response);
+                    }
+
                 }
 
             }
@@ -176,7 +205,7 @@ namespace Giselle.Commons.Web
                 innerException = e;
             }
 
-            throw new NetworkException("", innerException);
+            throw new WebNetworkException("", innerException);
         }
 
     }

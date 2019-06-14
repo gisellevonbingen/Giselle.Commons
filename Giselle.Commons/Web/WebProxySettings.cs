@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Giselle.Commons.Web
 {
-    public class ProxySettings
+    public class WebProxySettings
     {
         public static char PortDelimiter { get; } = ':';
 
-        public static bool TryParse(string s, out ProxySettings settings)
+        public static bool TryParse(string s, out WebProxySettings settings)
         {
             if (s == null)
             {
@@ -22,7 +22,7 @@ namespace Giselle.Commons.Web
 
             if (splited.Length == 2 && ushort.TryParse(splited[1], out var port) == true)
             {
-                settings = new ProxySettings(splited[0], port);
+                settings = new WebProxySettings(splited[0], port);
                 return true;
             }
             else
@@ -36,12 +36,12 @@ namespace Giselle.Commons.Web
         public string Hostname { get; set; } = null;
         public ushort Port { get; set; } = 0;
 
-        public ProxySettings()
+        public WebProxySettings()
         {
 
         }
 
-        public ProxySettings(string hostname, ushort port)
+        public WebProxySettings(string hostname, ushort port)
         {
             this.Hostname = hostname;
             this.Port = port;

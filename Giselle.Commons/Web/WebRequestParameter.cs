@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Giselle.Commons.Web
 {
-    public class RequestParameter
+    public class WebRequestParameter
     {
         public string URL { get; set; } = null;
         public string Method { get; set; } = null;
@@ -21,7 +21,7 @@ namespace Giselle.Commons.Web
         public bool AllowAutoRedirect { get; set; } = false;
         public object WriteParameter { get; set; } = null;
         public Dictionary<string, string> Headers { get; } = new Dictionary<string, string>();
-        public ProxySettings Proxy { get; set; } = null;
+        public WebProxySettings Proxy { get; set; } = null;
         public string UserAgent { get; set; } = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
         public string CacheControl { get; set; } = "max-age=0";
         public string DNT { get; set; } = "1";
@@ -29,7 +29,7 @@ namespace Giselle.Commons.Web
         public ICredentials Credentials { get; set; } = CredentialCache.DefaultCredentials;
         public bool KeepAlive { get; set; } = true;
 
-        public RequestParameter()
+        public WebRequestParameter()
         {
 
         }

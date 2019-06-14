@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace Giselle.Commons.Web
 {
-    public class SessionResponse : IDisposable
+    public class WebResponse : IDisposable
     {
         public HttpWebResponse Impl { get; }
 
-        public SessionResponse(HttpWebResponse impl)
+        public WebResponse(HttpWebResponse impl)
         {
             this.Impl = impl;
         }
 
-        ~SessionResponse()
+        ~WebResponse()
         {
             this.Dispose(false);
         }

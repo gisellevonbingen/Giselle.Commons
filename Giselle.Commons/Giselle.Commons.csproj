@@ -60,12 +60,14 @@
     <Compile Include="StringUtils.cs" />
     <Compile Include="ThreadUtils.cs" />
     <Compile Include="ToStringBuilder.cs" />
-    <Compile Include="Web\NetworkException.cs" />
-    <Compile Include="Web\ProxySettings.cs" />
-    <Compile Include="Web\RequestParameter.cs" />
-    <Compile Include="Web\RequestWriteEventArgs.cs" />
-    <Compile Include="Web\SessionResponse.cs" />
+    <Compile Include="Web\WebNetworkException.cs" />
+    <Compile Include="Web\WebProxySettings.cs" />
+    <Compile Include="Web\WebRequestEventArgs.cs" />
+    <Compile Include="Web\WebRequestParameter.cs" />
+    <Compile Include="Web\WebRequestWriteEventArgs.cs" />
+    <Compile Include="Web\WebResponse.cs" />
     <Compile Include="Web\WebExplorer.cs" />
+    <Compile Include="Web\WebResponseEventArgs.cs" />
     <Compile Include="WindowsMessage.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

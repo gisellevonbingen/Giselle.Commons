@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Giselle.Commons.Web
 {
-    public class RequestWriteEventArgs : EventArgs
+    public class WebRequestWriteEventArgs : EventArgs
     {
         public Stream Stream { get; }
 
-        public RequestWriteEventArgs(Stream stream)
+        public WebRequestWriteEventArgs(Stream stream)
         {
             this.Stream = stream;
         }
