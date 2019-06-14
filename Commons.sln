@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29009.5
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commons", "Commons\Commons.csproj", "{683A250C-4506-4336-BA56-1B04CF8916C8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giselle.Commons", "Giselle.Commons\Giselle.Commons.csproj", "{683A250C-4506-4336-BA56-1B04CF8916C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{8739E65C-A8F4-4896-BF48-82D52264183B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giselle.Commons.Test", "Giselle.Commons.Test\Giselle.Commons.Test.csproj", "{8739E65C-A8F4-4896-BF48-82D52264183B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,5 +24,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {33FB4604-0F8B-4500-A956-82AD77DB546D}
 	EndGlobalSection
 EndGlobal

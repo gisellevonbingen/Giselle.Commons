@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Giselle.Commons;
 
-namespace Test
+namespace Giselle.Commons.Test
 {
     public class Program
     {
