@@ -25,9 +25,14 @@ namespace Giselle.Commons.Web
 
         public string ReadAsString()
         {
+            return this.ReadAsString(Encoding.UTF8);
+        }
+
+        public string ReadAsString(Encoding encoding)
+        {
             using (var stream = this.ReadAsStream())
             {
-                using (var reader = new StreamReader(stream))
+                using (var reader = new StreamReader(stream, encoding))
                 {
                     return reader.ReadToEnd();
                 }
@@ -38,8 +43,19 @@ namespace Giselle.Commons.Web
 
         public Stream ReadAsStream()
         {
-            var contentEncoding = this.Impl.ContentEncoding;
+            return this.ReadAsStream(false);
+        }
+
+        public Stream ReadAsStream(bool ignoreContentEncoding)
+        {
             var stream = this.Impl.GetResponseStream();
+
+            if (ignoreContentEncoding == true)
+            {
+                return stream;
+            }
+
+            var contentEncoding = this.Impl.ContentEncoding;
 
             if (contentEncoding.Equals("gzip", StringComparison.OrdinalIgnoreCase) == true)
             {
