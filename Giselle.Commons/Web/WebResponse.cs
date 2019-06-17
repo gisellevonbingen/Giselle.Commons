@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -24,7 +25,7 @@ namespace Giselle.Commons.Web
 
         public string ReadAsString()
         {
-            using (var stream = this.Impl.GetResponseStream())
+            using (var stream = this.ReadAsStream())
             {
                 using (var reader = new StreamReader(stream))
                 {
@@ -37,7 +38,18 @@ namespace Giselle.Commons.Web
 
         public Stream ReadAsStream()
         {
-            return this.Impl.GetResponseStream();
+            var contentEncoding = this.Impl.ContentEncoding;
+            var stream = this.Impl.GetResponseStream();
+
+            if (contentEncoding.Equals("gzip", StringComparison.OrdinalIgnoreCase) == true)
+            {
+                return new GZipStream(stream, CompressionMode.Decompress);
+            }
+            else
+            {
+                return stream;
+            }
+
         }
 
         public void Dispose()
