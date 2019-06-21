@@ -50,9 +50,8 @@ namespace Giselle.Commons.Web
 
         public virtual HttpWebRequest CreateRequest(WebRequestParameter parameter)
         {
-            string url = parameter.URL;
-            var uri = new Uri(url);
-            var request = (HttpWebRequest)WebRequest.Create(url);
+            var uri = new Uri(parameter.Uri);
+            var request = (HttpWebRequest)WebRequest.Create(uri);
 
             var headers = request.Headers;
             request.Credentials = parameter.Credentials;

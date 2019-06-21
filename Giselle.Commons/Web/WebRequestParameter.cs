@@ -9,7 +9,7 @@ namespace Giselle.Commons.Web
 {
     public class WebRequestParameter
     {
-        public string URL { get; set; } = null;
+        public string Uri { get; set; } = null;
         public string Method { get; set; } = null;
         public string Referer { get; set; } = null;
         public string ContentType { get; set; } = null;
