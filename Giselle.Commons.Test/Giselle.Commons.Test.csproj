@@ -51,6 +51,16 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Giselle.Commons\Giselle.Commons.csproj">
+      <Project>{683a250c-4506-4336-ba56-1b04cf8916c8}</Project>
+      <Name>Giselle.Commons</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Giselle.Drawing\Giselle.Drawing.csproj">
+      <Project>{1df010e3-9513-46f9-b634-330dadf80d36}</Project>
+      <Name>Giselle.Drawing</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
