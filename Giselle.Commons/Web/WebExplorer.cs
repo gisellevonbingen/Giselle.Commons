@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Giselle.Commons.Web
@@ -136,7 +137,7 @@ namespace Giselle.Commons.Web
 
         }
 
-        public virtual WebResponse Request(WebRequestParameter parameter)
+        public virtual WebResponse Request(WebRequestParameter parameter, CancellationTokenSource cancelTokenSource = null)
         {
             Exception lastException = null;
 
@@ -144,7 +145,8 @@ namespace Giselle.Commons.Web
             {
                 try
                 {
-                    return this.RequestInTry(parameter, i);
+                    var token = cancelTokenSource?.Token;
+                    return this.RequestInTry(parameter, i, token);
                 }
                 catch (Exception e)
                 {
@@ -156,7 +158,7 @@ namespace Giselle.Commons.Web
             throw new WebNetworkException("", lastException);
         }
 
-        protected virtual WebResponse RequestInTry(WebRequestParameter parameter, int tryIndex)
+        protected virtual WebResponse RequestInTry(WebRequestParameter parameter, int tryIndex, CancellationToken? cancelToken = null)
         {
             Exception innerException = null;
 
@@ -171,6 +173,7 @@ namespace Giselle.Commons.Web
 
                 try
                 {
+                    cancelToken?.Register(() => request.Abort());
                     responseImpl = (HttpWebResponse)request.GetResponse();
                 }
                 catch (WebException e)
