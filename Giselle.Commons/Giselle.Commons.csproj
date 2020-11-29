@@ -49,16 +49,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DictionaryUtils.cs" />
+    <Compile Include="Collections\CollectionEventArgs.cs" />
+    <Compile Include="Collections\CollectionUtils.cs" />
+    <Compile Include="Collections\EventDrivenList.cs" />
+    <Compile Include="Collections\INamed.cs" />
+    <Compile Include="Collections\ReadOnlyDictionary.cs" />
+    <Compile Include="Collections\ReadOnlyList.cs" />
+    <Compile Include="Collections\SimpleList.cs" />
+    <Compile Include="Collections\SimpleNameRegistry.cs" />
+    <Compile Include="Collections\SimpleRegistry.cs" />
     <Compile Include="EncodingUtils.cs" />
-    <Compile Include="EnumerableUtils.cs" />
-    <Compile Include="EnumUtils.cs" />
+    <Compile Include="Enums\EnumCache.cs" />
+    <Compile Include="Enums\EnumComparer.cs" />
+    <Compile Include="Enums\EnumUtils.cs" />
+    <Compile Include="FileSizeUnit.cs" />
+    <Compile Include="FileSizeUtils.cs" />
     <Compile Include="NumberUtils.cs" />
     <Compile Include="ObjectUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RandomUtils.cs" />
     <Compile Include="StringUtils.cs" />
     <Compile Include="ThreadUtils.cs" />
-    <Compile Include="ToStringBuilder.cs" />
     <Compile Include="Web\WebNetworkException.cs" />
     <Compile Include="Web\WebProxySettings.cs" />
     <Compile Include="Web\WebRequestEventArgs.cs" />

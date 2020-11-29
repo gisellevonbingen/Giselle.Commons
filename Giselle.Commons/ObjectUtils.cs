@@ -4,135 +4,175 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Giselle.Commons.Collections;
 
 namespace Giselle.Commons
 {
     public static class ObjectUtils
     {
-        public const string NULL = "NULL";
+        public static int HashSeed { get; } = 17;
+        public static int HashMultiplier { get; } = 31;
 
-        public static string ToStringSimple(string name, List<string> names, Dictionary<string, object> map)
+        public static IEnumerable<T> InsertFirst<T>(this T first, IEnumerable<T> collection)
         {
-            string str = "";
+            yield return first;
 
-            for (int i = 0; i < names.Count; i++)
+            foreach (var e in collection)
             {
-                string key = names[i];
-                object value = null;
-                map.TryGetValue(key, out value);
-
-                str += string.Format("{0}={1}", ObjectUtils.ToString(key), ObjectUtils.ToString(value));
-
-                if (i + 1 < names.Count)
-                {
-                    str += ",";
-                }
-
+                yield return e;
             }
 
-
-            return name + "{" + str + "}";
         }
 
-        public static string ToStringSimple(string name, params object[] objs)
+        public static IEnumerable<T> InsertLast<T>(this T first, IEnumerable<T> collection)
         {
-            string str = "";
-
-            if (objs == null)
+            foreach (var e in collection)
             {
-                str = NULL;
+                yield return e;
+            }
+
+            yield return first;
+        }
+
+        public static int GetHashCodeSafe<T>(T obj)
+        {
+            if (obj is ValueType || obj != null)
+            {
+                return obj.GetHashCode();
+            }
+
+            return 0;
+        }
+
+        public static int AccumulateHashCode<T>(int hash, T value)
+        {
+            return hash * HashMultiplier + GetHashCodeSafe(value);
+        }
+
+        public static int AccumulateHashCode<T>(int hash, IEnumerable<T> collection)
+        {
+            foreach (var obj in collection)
+            {
+                hash = AccumulateHashCode(hash, obj);
+            }
+
+            return hash;
+        }
+
+        public static int SelectHashCode<T>(this T first, params T[] array)
+        {
+            var hash = AccumulateHashCode(HashSeed, first);
+            return AccumulateHashCode(hash, array);
+        }
+
+        public static int SelectHashCode<T>(this IEnumerable<T> collection)
+        {
+            return AccumulateHashCode(HashSeed, collection);
+        }
+
+        public static bool EqualsTypeStruct<T>(this T o1, T o2) where T : struct
+        {
+            return o1.GetType().Equals(o2.GetType());
+        }
+
+        public static bool EqualsTypeClass<T>(this T o1, T o2) where T : class
+        {
+            if (o1 == null)
+            {
+                return o2 == null;
+            }
+            else if (o2 == null)
+            {
+                return false;
+            }
+
+            return o1.GetType().Equals(o2.GetType());
+        }
+
+        public static T ConsumeOwn<T>(this T instance, Action<T> action)
+        {
+            if (instance is ValueType || instance != null)
+            {
+                action(instance);
+                return instance;
             }
             else
             {
-                for (int i = 0; i < objs.Length; i += 2)
-                {
-                    object obj1 = objs[i];
-                    object obj2 = null;
-
-                    if (i + 1 < objs.Length)
-                    {
-                        obj2 = objs[i + 1];
-                    }
-
-                    str += string.Format("{0}={1}", obj1, ObjectUtils.ToString(obj2));
-
-                    if (i + 2 < objs.Length)
-                    {
-                        str += ",";
-                    }
-
-                }
-
+                return default;
             }
 
-            return name + "{" + str + "}";
         }
 
-        public static string ToString(string name, object obj)
+        public static V ConsumeSelect<T, V>(this T instance, Func<T, V> action, V fallback = default)
         {
-            return ToString(name, obj, NULL);
-        }
-
-        public static string ToString(object obj, string nullString)
-        {
-            return ToString(null, obj, NULL);
-        }
-
-        public static string ToString(string name, object obj, string nullString)
-        {
-            if (obj == null)
+            if (instance is ValueType || instance != null)
             {
-                return nullString;
-            }
-
-            if (obj is string || obj.GetType().IsPrimitive)
-            {
-                return obj.ToString();
-            }
-            else if (obj is IDictionary)
-            {
-                return EnumerableUtils.ToString(name, (IDictionary)obj);
-            }
-            else if (obj is IEnumerable)
-            {
-                return EnumerableUtils.ToString(name, (IEnumerable)obj);
-            }
-
-            if (name == null)
-            {
-                return obj.ToString();
+                return action(instance);
             }
             else
             {
-                return WrapName(name, obj.ToString());
+                return fallback;
             }
 
         }
-        public static string ToString(object obj)
+
+        public static bool EqualsType<T>(this T instance, T other) where T : class, IEquatable<T>
         {
-            return ToString(null, obj);
+            return other != null && instance.GetType().Equals(other.GetType()) == true;
         }
 
-        public static string WrapName(string name, string str)
+        public static string ToString<T>(T value)
         {
-            return name + "{" + str + "}";
+            if (value == null)
+            {
+                return StringUtils.NULL;
+            }
+            else if (value is string || value.GetType().IsPrimitive == true || value is Enum)
+            {
+                return value.ToString();
+            }
+            else if (value is IDictionary dictionary)
+            {
+                var list = CollectionUtils.GetEnumerable(dictionary.GetEnumerator());
+                return ToString(list.Select(e => $"{ToString(e.Key)}={ToString(e.Value)}").ToArray());
+            }
+            else if (value is IEnumerable enumerable)
+            {
+                return $"[{string.Join(", ", enumerable.OfType<object>().Select(o => ToString(o)).ToArray())}]";
+            }
+
+            return value.ToString();
         }
 
-        public static void DisposeQuietly(IDisposable disposable)
+        public static void ExecuteQuietly<T>(Action action)
         {
             try
             {
-                if (disposable != null)
-                {
-                    disposable.Dispose();
-                }
-
+                action();
             }
-            catch
+            catch (Exception)
             {
 
             }
 
+        }
+
+        public static void ExecuteQuietly<T>(T obj, Action<T> action)
+        {
+            try
+            {
+                action(obj);
+            }
+            catch (Exception)
+            {
+
+            }
+
+        }
+
+        public static void DisposeQuietly(IDisposable obj)
+        {
+            ExecuteQuietly(obj, o => o.Dispose());
         }
 
     }
