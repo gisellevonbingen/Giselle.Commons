@@ -42,6 +42,16 @@ namespace Giselle.Commons
             return true;
         }
 
+        public static bool IsGeneral(this double value)
+        {
+            if (double.IsNaN(value) || double.IsInfinity(value))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public static string ToNumberString(this IFormattable formattable)
         {
             return formattable.ToString("#,##0", null);
@@ -54,6 +64,17 @@ namespace Giselle.Commons
         public static double? ToDoubleNullable(this string str)
         {
             return double.TryParse(str, out var value) ? value : new double?();
+        }
+
+        public static double ToDoubleGeneral(this string str, double fallback = 0.0D)
+        {
+            var value = ToDouble(str);
+            return value.IsGeneral() ? value : fallback;
+        }
+        public static double? ToDoubleNullableGeneal(this string str)
+        {
+            var value = ToDoubleNullable(str);
+            return value.HasValue && value.Value.IsGeneral() ? value : new double?();
         }
 
         public static float ToFloat(this string str, float fallback = 0.0F)

@@ -13,6 +13,48 @@ namespace Giselle.Commons
         public static int HashSeed { get; } = 17;
         public static int HashMultiplier { get; } = 31;
 
+        public static int CompareTo<T>(T o1, object o2) where T : struct, IComparable<T>
+        {
+            var t = o2 as T?;
+
+            if (t.HasValue == true)
+            {
+                return CompareTo(o1, t);
+            }
+            else
+            {
+                return 1;
+            }
+
+        }
+
+        public static bool CompareTo<T>(in T o1, in T o2, Comparison<T> comparison, out int result)
+        {
+            if (o1 is ValueType)
+            {
+                result = comparison(o1, o2);
+            }
+            else if (o1 == null)
+            {
+                result = o2 == null ? 0 : 1;
+            }
+            else if (o2 == null)
+            {
+                result = -1;
+            }
+            else
+            {
+                result = comparison(o1, o2);
+            }
+
+            return result != 0;
+        }
+
+        public static bool CompareTo<T>(in T o1, in T o2, out int result) where T : IComparable<T>
+        {
+            return CompareTo(o1, o2, (x, y) => x.CompareTo(y), out result);
+        }
+
         public static IEnumerable<T> InsertFirst<T>(this T first, IEnumerable<T> collection)
         {
             yield return first;
@@ -34,7 +76,7 @@ namespace Giselle.Commons
             yield return first;
         }
 
-        public static int GetHashCodeSafe<T>(T obj)
+        public static int GetHashCodeSafe<T>(this T obj)
         {
             if (obj is ValueType || obj != null)
             {
@@ -44,12 +86,12 @@ namespace Giselle.Commons
             return 0;
         }
 
-        public static int AccumulateHashCode<T>(int hash, T value)
+        public static int AccumulateHashCode<T>(this int hash, T value)
         {
             return hash * HashMultiplier + GetHashCodeSafe(value);
         }
 
-        public static int AccumulateHashCode<T>(int hash, IEnumerable<T> collection)
+        public static int AccumulateHashCode<T>(this int hash, IEnumerable<T> collection)
         {
             foreach (var obj in collection)
             {
@@ -144,7 +186,7 @@ namespace Giselle.Commons
             return value.ToString();
         }
 
-        public static void ExecuteQuietly<T>(Action action)
+        public static void ExecuteQuietly<T>(this Action action)
         {
             try
             {
@@ -157,7 +199,7 @@ namespace Giselle.Commons
 
         }
 
-        public static void ExecuteQuietly<T>(T obj, Action<T> action)
+        public static void ExecuteQuietly<T>(this T obj, Action<T> action)
         {
             try
             {
@@ -170,7 +212,7 @@ namespace Giselle.Commons
 
         }
 
-        public static void DisposeQuietly(IDisposable obj)
+        public static void DisposeQuietly(this IDisposable obj)
         {
             ExecuteQuietly(obj, o => o.Dispose());
         }

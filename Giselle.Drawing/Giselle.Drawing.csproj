@@ -42,7 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ColorUtils.cs" />
     <Compile Include="DrawingUtils.cs" />
+    <Compile Include="FontFormat.cs" />
     <Compile Include="PlaceDirection.cs" />
     <Compile Include="PlaceLevel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
