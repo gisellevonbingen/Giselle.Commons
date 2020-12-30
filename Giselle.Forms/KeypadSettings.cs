@@ -44,8 +44,7 @@ namespace Giselle.Forms
 
         protected virtual void OnValidate(KeypadValidateEventArgs e)
         {
-            var handler = this.Validating;
-            if (handler != null) handler(this, e);
+            this.Validating?.Invoke(this, e);
         }
 
         public KeypadParseResult Validate(string text)
@@ -55,8 +54,7 @@ namespace Giselle.Forms
 
             if (type == KeypadType.Number)
             {
-                double value;
-                var cause = NumberRange.TryParse(text, this.ToNumberRange(), out value);
+                var cause = NumberRange.TryParse(text, this.ToNumberRange(), out var value);
                 result.NumberErrorCause = cause;
                 result.Number = value;
                 result.Validated = cause == NumberErrorCause.None;
@@ -69,7 +67,7 @@ namespace Giselle.Forms
 
                 if (splits.Length == 4)
                 {
-                    var anyDecimalValidated = splits.All(t => { byte b; return byte.TryParse(t, out b); });
+                    var anyDecimalValidated = splits.All(t => { return byte.TryParse(t, out var b); });
 
                     if (anyDecimalValidated == true)
                     {

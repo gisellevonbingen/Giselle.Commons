@@ -169,6 +169,7 @@ namespace Giselle.Forms
             var settings = this.Settings;
             this.DotButton.Visible = settings.Dps > 0;
             this.RangeLabel.Text = this.ToStringRange(settings);
+            this.RangeLabel.FitFontSize(this.Font.Size);
             this.TextBox.Focus();
             this.TextBox.SelectAll();
             this.UpdateResult();

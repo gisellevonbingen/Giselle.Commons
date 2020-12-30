@@ -70,6 +70,7 @@ namespace Giselle.Forms
         {
             var proposedSize = format.ProposedSize;
             var size = format.Size;
+            var minSize = format.MinSize;
 
             while (true)
             {
@@ -85,9 +86,13 @@ namespace Giselle.Forms
                 {
                     return font;
                 }
-                else
+                else if (size > minSize)
                 {
                     size--;
+                }
+                else
+                {
+                    return font;
                 }
 
             }

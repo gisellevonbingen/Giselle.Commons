@@ -69,6 +69,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomUtils.cs" />
     <Compile Include="StringUtils.cs" />
+    <Compile Include="Tags\IIdTag.cs" />
+    <Compile Include="Tags\INameTag.cs" />
+    <Compile Include="Tags\ITag.cs" />
+    <Compile Include="Tags\SimpleIdTags.cs" />
+    <Compile Include="Tags\SimpleNameTags.cs" />
+    <Compile Include="Tags\SimpleTags.cs" />
     <Compile Include="ThreadUtils.cs" />
     <Compile Include="Web\WebNetworkException.cs" />
     <Compile Include="Web\WebProxySettings.cs" />

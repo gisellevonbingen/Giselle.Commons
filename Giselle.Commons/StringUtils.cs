@@ -28,12 +28,12 @@ namespace Giselle.Commons
             return str.Split(new string[] { separator }, count, options);
         }
 
-        public static string RemoveSuffx(this string str, char suffix)
+        public static string RemoveSuffix(this string str, char suffix)
         {
-            return RemoveSuffx(str, suffix.ToString());
+            return RemoveSuffix(str, suffix.ToString());
         }
 
-        public static string RemoveSuffx(this string str, string suffix)
+        public static string RemoveSuffix(this string str, string suffix)
         {
             if (str == null)
             {
@@ -48,12 +48,12 @@ namespace Giselle.Commons
             return str;
         }
 
-        public static string AddSuffx(this string str, char suffix)
+        public static string AddSuffix(this string str, char suffix)
         {
-            return AddSuffx(str, suffix.ToString());
+            return AddSuffix(str, suffix.ToString());
         }
 
-        public static string AddSuffx(this string str, string suffix)
+        public static string AddSuffix(this string str, string suffix)
         {
             if (str == null)
             {

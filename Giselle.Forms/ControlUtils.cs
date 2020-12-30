@@ -32,6 +32,19 @@ namespace Giselle.Forms
             SetStyleAction = (Action<Control, ControlStyles, bool>)SetStyleMethod.CreateDelegate(typeof(Action<Control, ControlStyles, bool>));
         }
 
+        public static void FitFontSize(this Control control, float max)
+        {
+            control.FitFontSize(max, control.Text);
+        }
+
+        public static void FitFontSize(this Control control, float max, string text)
+        {
+            var format = new FontMatchFormat();
+            format.Size = max;
+            format.ProposedSize = control.Size;
+            control.Font = OptimizedControl.DefaultFontManager.FindMatch(text, format);
+        }
+
         public static Rectangle ToLayoutBounds(this Size size, Padding padding)
         {
             return new Rectangle(padding.Left, padding.Top, size.Width - padding.Horizontal, size.Height - padding.Vertical);

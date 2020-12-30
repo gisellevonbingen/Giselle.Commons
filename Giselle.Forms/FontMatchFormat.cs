@@ -13,6 +13,7 @@ namespace Giselle.Forms
         public Size ProposedSize { get; set; }
         public FontStyle Style { get; set; }
         public float Size { get; set; }
+        public float MinSize { get; set; } = 1.0F;
         public TextFormatFlags Flags { get; set; }
 
         public FontMatchFormat()
