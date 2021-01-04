@@ -8,7 +8,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Giselle.Commons.Collections;
 using Giselle.Drawing;
 using Giselle.Drawing.Drawing;
 
@@ -16,6 +15,7 @@ namespace Giselle.Forms
 {
     public static class ControlUtils
     {
+        private static FieldInfo DefaultIconField;
         private static readonly MethodInfo SetStyleMethod;
         private static readonly Action<Control, ControlStyles, bool> SetStyleAction;
 
@@ -28,8 +28,23 @@ namespace Giselle.Forms
 
         static ControlUtils()
         {
+            DefaultIconField = typeof(Form).GetField("defaultIcon", BindingFlags.NonPublic | BindingFlags.Static);
             SetStyleMethod = typeof(Control).GetMethod("SetStyle", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
             SetStyleAction = (Action<Control, ControlStyles, bool>)SetStyleMethod.CreateDelegate(typeof(Action<Control, ControlStyles, bool>));
+        }
+
+        public static Icon DefaultIcon
+        {
+            get
+            {
+                return DefaultIconField.GetValue(null) as Icon;
+            }
+
+            set
+            {
+                DefaultIconField.SetValue(null, value);
+            }
+
         }
 
         public static void FitFontSize(this Control control, float max)
@@ -166,11 +181,11 @@ namespace Giselle.Forms
         internal static StringAlignment TranslateAlignment(ContentAlignment align)
         {
             StringAlignment result;
-            if ((align & anyRight) != (System.Drawing.ContentAlignment)0)
+            if ((align & anyRight) != 0)
             {
                 result = StringAlignment.Far;
             }
-            else if ((align & anyCenter) != (System.Drawing.ContentAlignment)0)
+            else if ((align & anyCenter) != 0)
             {
                 result = StringAlignment.Center;
             }
@@ -184,11 +199,11 @@ namespace Giselle.Forms
         internal static TextFormatFlags TranslateAlignmentForGDI(System.Drawing.ContentAlignment align)
         {
             TextFormatFlags result;
-            if ((align & anyBottom) != (System.Drawing.ContentAlignment)0)
+            if ((align & anyBottom) != 0)
             {
                 result = TextFormatFlags.Bottom;
             }
-            else if ((align & anyMiddle) != (System.Drawing.ContentAlignment)0)
+            else if ((align & anyMiddle) != 0)
             {
                 result = TextFormatFlags.VerticalCenter;
             }
@@ -199,14 +214,14 @@ namespace Giselle.Forms
             return result;
         }
 
-        internal static StringAlignment TranslateLineAlignment(System.Drawing.ContentAlignment align)
+        internal static StringAlignment TranslateLineAlignment(ContentAlignment align)
         {
             StringAlignment result;
-            if ((align & anyBottom) != (System.Drawing.ContentAlignment)0)
+            if ((align & anyBottom) != 0)
             {
                 result = StringAlignment.Far;
             }
-            else if ((align & anyMiddle) != (System.Drawing.ContentAlignment)0)
+            else if ((align & anyMiddle) != 0)
             {
                 result = StringAlignment.Center;
             }
@@ -217,14 +232,14 @@ namespace Giselle.Forms
             return result;
         }
 
-        internal static TextFormatFlags TranslateLineAlignmentForGDI(System.Drawing.ContentAlignment align)
+        internal static TextFormatFlags TranslateLineAlignmentForGDI(ContentAlignment align)
         {
             TextFormatFlags result;
-            if ((align & anyRight) != (System.Drawing.ContentAlignment)0)
+            if ((align & anyRight) != 0)
             {
                 result = TextFormatFlags.Right;
             }
-            else if ((align & anyCenter) != (System.Drawing.ContentAlignment)0)
+            else if ((align & anyCenter) != 0)
             {
                 result = TextFormatFlags.HorizontalCenter;
             }
@@ -235,7 +250,7 @@ namespace Giselle.Forms
             return result;
         }
 
-        internal static StringFormat CreateStringFormat(Control ctl, System.Drawing.ContentAlignment textAlign, bool showEllipsis, bool useMnemonic, bool showKeyboardCues)
+        internal static StringFormat CreateStringFormat(Control ctl, ContentAlignment textAlign, bool showEllipsis, bool useMnemonic, bool showKeyboardCues)
         {
             StringFormat stringFormat = StringFormatForAlignment(textAlign);
             if (ctl.RightToLeft == RightToLeft.Yes)
