@@ -158,9 +158,34 @@ namespace Giselle.Commons
 
         }
 
-        public static bool EqualsType<T>(this T instance, T other) where T : class, IEquatable<T>
+        public static bool EqualsType<T>(this T o1, T o2)
         {
-            return other != null && instance.GetType().Equals(other.GetType()) == true;
+            if (o1 is ValueType)
+            {
+                if (o2 is ValueType)
+                {
+                    return o1.GetType().Equals(o2.GetType());
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+            else if (o2 is ValueType)
+            {
+                return false;
+            }
+            else if (o1 == null)
+            {
+                return o2 == null;
+            }
+            else if (o2 == null)
+            {
+                return false;
+            }
+
+            return o1.GetType().Equals(o2.GetType());
         }
 
         public static string ToString<T>(T value)
