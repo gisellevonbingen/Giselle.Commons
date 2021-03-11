@@ -101,7 +101,7 @@ namespace Giselle.Commons
             return hash;
         }
 
-        public static int SelectHashCode<T>(this T first, params T[] array)
+        public static int SelectHashCodeParams<T>(this T first, params T[] array)
         {
             var hash = AccumulateHashCode(HashSeed, first);
             return AccumulateHashCode(hash, array);
@@ -110,25 +110,6 @@ namespace Giselle.Commons
         public static int SelectHashCode<T>(this IEnumerable<T> collection)
         {
             return AccumulateHashCode(HashSeed, collection);
-        }
-
-        public static bool EqualsTypeStruct<T>(this T o1, T o2) where T : struct
-        {
-            return o1.GetType().Equals(o2.GetType());
-        }
-
-        public static bool EqualsTypeClass<T>(this T o1, T o2) where T : class
-        {
-            if (o1 == null)
-            {
-                return o2 == null;
-            }
-            else if (o2 == null)
-            {
-                return false;
-            }
-
-            return o1.GetType().Equals(o2.GetType());
         }
 
         public static T ConsumeOwn<T>(this T instance, Action<T> action)
